@@ -15,7 +15,7 @@ function displayResults(responseJson) {
   $('#results-list').empty();
 
 
-  
+
 
   const geocodeEndPoint = 'http://www.mapquestapi.com/geocoding/v1/reverse';
   const mapsApiKey = 'oHKlSGAg8YwWwSQo2kApEavQHBG6Cn1p';
@@ -77,7 +77,7 @@ function displayResults(responseJson) {
   }
 }
 
-  function getParks(searchTerms, maxResults) {
+  function getParks(searchTerms, maxResults=10) {
     const params = {
       api_key: apiKey,
       stateCode: searchTerms,
