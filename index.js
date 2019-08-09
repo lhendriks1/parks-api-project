@@ -14,63 +14,17 @@ function displayResults(responseJson) {
 
   $('#results-list').empty();
 
-
-
-
-  const geocodeEndPoint = 'http://www.mapquestapi.com/geocoding/v1/reverse';
-  const mapsApiKey = 'oHKlSGAg8YwWwSQo2kApEavQHBG6Cn1p';
-
   for (let i = 0; i < responseJson.data.length; i++) {
     let fullName = responseJson.data[i].fullName;
     let desc = responseJson.data[i].description;
     let url = responseJson.data[i].url;
-    let latLongStr = responseJson.data[i].latLong.replace(/lat|long|,|:|"/gi, "").split(" ").toString();
-    let latLongUrl = `${geocodeEndPoint}?location=${latLongStr}&key=${mapsApiKey}`;
-
-    fetch(latLongUrl)
-      .then(responseGm => {
-        if (responseGm.ok) {
-          return responseGm.json();
-        }
-        throw new Error(responseGm.statusText);
-      })
-      .then(function(responseGmJson) {
-        var parkArr = [];
-        let street = responseGmJson.results[0].locations[0].street;
-          if (street === "") {street = "unknown"};
-        let city = responseGmJson.results[0].locations[0].adminArea4;
-          if (city == "") {city = "unknown"};
-        let state = responseGmJson.results[0].locations[0].adminArea3;
-          if (state == "") {state = "unknown"};
-        parkArr.push(
-          {name: fullName,
-            street: street,
-            city: city,
-            state: state,
-            desc: desc,
-            url: url
-          }
-        );
-        return parkArr;
-      })
-      .then(parkArr => generateList(parkArr))
-      .catch(err => {
-      })
-  }
-
-
-
-    function generateList(parkArr) {
-      for (let i = 0; i < parkArr.length; i++) {
 
       $('#results-list').append(
-        `<li><h3>${parkArr[0].name}</h3>
-         <p>${parkArr[0].desc}</p>
-         <p>${parkArr[0].street}, ${parkArr[0].city}, ${parkArr[0].state}</p>
-         <a href="${parkArr[0].url}">${parkArr[0].url}</a>
+        `<li><h3>${fullName}</h3>
+         <p>${desc}</p>
+         <a href="${url}">${url}</a>
          </li>`
       )
-    };
 
     $('#results').removeClass('hidden');
 
